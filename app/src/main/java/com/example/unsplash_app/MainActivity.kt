@@ -73,9 +73,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "입력 가능한 최대 글자수는 12글자입니다.", Toast.LENGTH_SHORT).show()
             }
 
-            // 문제발생
-            // editText에 입력한 키워드 ex) cat 입력시 cat이 url 주소값으로 참조되지 않고, editText의 주소값이 참조되는 것 같음)
-            Log.d("editTextCheck", binding.editText1.toString())
+            Log.d(TAG, binding.editText1.text.toString())
         }
 
 
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         binding.searchButton.setOnClickListener {
             // 사진 검색 api 호출
             RetrofitManager.instance.searchPhotos(
-                searchTerm = binding.editText1.toString(),
+                searchTerm = binding.editText1.text.toString(),
                 completion = { responseState, responseBody ->
 
                     when (responseState) {
