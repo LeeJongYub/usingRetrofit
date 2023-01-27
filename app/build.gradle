@@ -39,12 +39,22 @@ android {
 dependencies {
     // 메테리얼 디자인
     def material_version = "1.8.0"
+    implementation "com.google.android.material:material:$material_version"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation "com.google.android.material:material:$material_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // 레트로핏
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    // 레트로핏 로깅 인터셉터
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    // 지슨컨버터
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+
+
 }
