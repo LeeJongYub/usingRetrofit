@@ -1,8 +1,12 @@
 package com.example.unsplash_app.retrofit
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import com.example.unsplash_app.API
 import com.example.unsplash_app.Constants.TAG
+import com.example.unsplash_app.MyApp
 import com.example.unsplash_app.isJsonArray
 import com.example.unsplash_app.isJsonObject
 import okhttp3.Interceptor
@@ -82,7 +86,21 @@ object RetrofitClient {
                     .method(originalRequest.method, originalRequest.body)
                     .build()
 
-                return chain.proceed(finalRequest)
+//                return chain.proceed(finalRequest)
+
+                // response.code ex) 200, 401, 404 등을 확인하기 위해 response 변수를 만들어
+                val response = chain.proceed(finalRequest)
+
+                // response.code 가 에러일 때(200이 아닐 때) 토스트 메세지를 띄우기 위한 코드
+                if (response.code != 200) {
+                    // 메인 스레드를 사용하지 않는 곳에 ui 작업을 하려하면 오류가 발생한다.
+                    // 이를 방지하기 위해 Handelr(Looper.getMainLooper()의 post 바디 블럭({}) 안에 ui 작업 코드를 넣어준다.)
+                    Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(MyApp.instance, "${response.code} 에러입니다.", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                return response
             }
 
         })

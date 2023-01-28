@@ -1,6 +1,7 @@
 package com.example.unsplash_app
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +14,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.unsplash_app.Constants.TAG
 import com.example.unsplash_app.databinding.ActivityMainBinding
 import com.example.unsplash_app.retrofit.RetrofitManager
+import com.google.gson.JsonElement
 
 class MainActivity : AppCompatActivity() {
 
@@ -107,12 +109,14 @@ class MainActivity : AppCompatActivity() {
                         RESPONSE_STATE.OK -> {
                             Toast.makeText(this, "api 호출 성공입니다.", Toast.LENGTH_SHORT).show()
                             Log.d(TAG, responseBody)
+
                         }
                         RESPONSE_STATE.NO -> {
                             Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 })
+
         }
 
     } // onCreate

@@ -2,7 +2,7 @@ package com.example.unsplash_app.retrofit
 
 import android.util.Log
 import com.example.unsplash_app.API
-import com.example.unsplash_app.Constants.TAG
+import com.example.unsplash_app.Photo
 import com.example.unsplash_app.RESPONSE_STATE
 import com.google.gson.JsonElement
 import retrofit2.Call
@@ -20,23 +20,86 @@ class RetrofitManager {
 
     // 사진 검색 api 호출,
     // searchPhotos 를 호출하는 부분에서 completion 을 발동시킴 -> 이벤트 전달, 데이터를 넘길 경우 completion() 안쪽에 자료형을 쓰면 됨)
-    fun searchPhotos(searchTerm : String, completion : (RESPONSE_STATE, String) -> Unit) {
+    fun searchPhotos(searchTerm: String, completion: (RESPONSE_STATE, String) -> Unit) {
 
-        val term = searchTerm ?: ""
+        // 레트로핏 인터페이스에서 호출할 데이터를 정해놓은 메서드(searchPhotos)
+        val call = iRetrofit?.searchPhotos(searchTerm) ?: return
 
-        val call = iRetrofit?.searchPhotos(term) ?: return
-
-        call.enqueue(object : retrofit2.Callback<JsonElement>{
+        // 해당 메서드를 실행(enqueue)하여 callback 으로 통신 성공, 실패 여부를 체크 및 데이터를 호출한다.
+        call.enqueue(object : retrofit2.Callback<JsonElement> {
 
             // 응답 성공시
             override fun onResponse(call: Call<JsonElement>, response: Response<JsonElement>) {
-                Log.d("header", "${response.headers()}")
-                Log.d("raw", "${response.raw()}")
-                Log.d("body", "${response.body()}")
-                Log.d("code", "${response.code()}")
 
-                completion(RESPONSE_STATE.OK, response.body().toString())
+                // response.code 를 확인한 다음에 데이터를 넘겨줌(?)
+                when (response.code()) {
 
+                    200 -> {
+
+                        response.body()?.let {
+                            // let 스코프 함수를 사용(it 에 response.body 의 데이터가 다 담겨있음)
+                            // asJsonObject 를 통해 body 부분을 jsonObject 로 가져옴
+                            val body = it.asJsonObject
+
+                            // body 에 있는 데이터 중 results 라는 배열이 있고, 이것을 getAsJsonArray()를 통해 json 배열로 빼내는 과정
+                            val results = body.getAsJsonArray("results")
+                            Log.d("resultArray", results.toString())
+
+                            // url 안에 있는 제이슨 데이터 중, total(총 데이터) 부분의 값(value)을 보기 위해
+                            // get() 안에 키(key)이름을 써서 asInt 나 asString 을 통해 원하는 값을 확인함
+                            val total = body.get("total").asInt
+                            Log.d("total", "total : ${total}") // total : 10000
+
+                            // 리사이클러뷰에 데이터를 넣기 전, 넣고 싶은 데이터만 추출하는 과정
+
+                            // results 에는 response.body 부분 중 "result" 라는 jsonArray 가 담겨있음
+                            // 이것은 한줄씩 표시(forEach)하여, 원하는 데이터를 제대로 가져왔는지 로그로 확인중..
+                            results.forEach { resultsItem ->
+
+                                // array 로 가져온 부분(results)을 resultsItem(한줄씩 표시된 상태)에서 asJsonObject 로 변환
+                                val resultsObject = resultsItem.asJsonObject
+                                Log.d("resultObject", resultsObject.toString())
+
+                                // 배열이 JsonObject 로 변환된 resultObject 에서 "user" 부분을 가져옴
+                                val user = resultsObject.get("user").asJsonObject
+                                Log.d("resultId", user.toString())
+
+                                // "user" 안에 있는 "username" 만 추출하여 문자열로 표기 및 로그로 확인
+                                val userName = user.get("username").asString
+                                Log.d("userName", userName)
+
+                                // 좋아요 개수 데이터 추출과정
+                                val likeCount = resultsObject.get("likes").asInt
+                                Log.d("likeCount", likeCount.toString())
+
+                                // 썸네일 주소 데이터 추출과정
+                                val thumbLinks = resultsObject.get("urls").asJsonObject.get("thumb").asString
+                                Log.d("thumbLinks", thumbLinks)
+
+                                // 날짜(사진 업로드) 데이터 추출과정
+                                val createdAt = resultsObject.get("created_at").asString
+                                Log.d("createdAt", createdAt)
+
+                                // createdAt 부분을 로그를 찍어보면 "2018-08-08T14:27:18Z" 와 같이 데이터가 찍힘
+                                // 이를 원하는 형태 "2018년 08월 08일"과 같이 찍기 위해선 2가지 과정이 필요하다.
+                                TODO()
+
+                                // 어떤 데이터만 표시할지 설정한 데이터클래스에 추출한 데이터들을 알맞게 넣어준다.
+                                // 이는 후에 리사이클러뷰를 만들고 데이터를 넣는 과정에서 활용되게 된다.
+                                val photoItem = Photo(
+                                    thumbnail = thumbLinks,
+                                    author = userName,
+                                    createdAt = createdAt,
+                                    likesCount = likeCount
+                                )
+
+                            }
+                        }
+
+                        // response.body() 부분에 데이터가 담겨져 있음
+                        completion(RESPONSE_STATE.OK, response.body().toString())
+                    }
+                }
             }
 
             // 응답 실패시
@@ -47,7 +110,6 @@ class RetrofitManager {
 
         })
     }
-
 
 
 }
