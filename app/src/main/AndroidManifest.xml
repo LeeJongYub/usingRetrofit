@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UnSplash_App"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -29,7 +30,14 @@
                 android:value="" />
         </activity>
 
-        <activity android:name=".SearchCollectionActivity"/>
+        <activity
+            android:name=".SearchCollectionActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
     </application>
 
 </manifest>

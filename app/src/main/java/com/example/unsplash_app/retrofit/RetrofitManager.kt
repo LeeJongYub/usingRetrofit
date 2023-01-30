@@ -3,7 +3,7 @@ package com.example.unsplash_app.retrofit
 import android.util.Log
 import com.example.unsplash_app.API
 import com.example.unsplash_app.Photo
-import com.example.unsplash_app.RESPONSE_STATE
+import com.example.unsplash_app.RESPONSE_STATUS
 import com.google.gson.JsonElement
 import retrofit2.Call
 import retrofit2.Response
@@ -21,7 +21,7 @@ class RetrofitManager {
 
     // 사진 검색 api 호출,
     // searchPhotos 를 호출하는 부분에서 completion 을 발동시킴 -> 이벤트 전달, 데이터를 넘길 경우 completion() 안쪽에 자료형을 쓰면 됨)
-    fun searchPhotos(searchTerm: String, completion: (RESPONSE_STATE, ArrayList<Photo>?) -> Unit) {
+    fun searchPhotos(searchTerm: String, completion: (RESPONSE_STATUS, ArrayList<Photo>?) -> Unit) {
 
         // 레트로핏 인터페이스에서 호출할 데이터를 정해놓은 메서드(searchPhotos)
         val call = iRetrofit?.searchPhotos(searchTerm) ?: return
@@ -53,6 +53,10 @@ class RetrofitManager {
                             // get() 안에 키(key)이름을 써서 asInt 나 asString 을 통해 원하는 값을 확인함
                             val total = body.get("total").asInt
                             Log.d("total", "total : ${total}") // total : 10000
+
+                            if (total == 0) {
+                                completion(RESPONSE_STATUS.NO_CONTENTS, null)
+                            } else {
 
                             // 리사이클러뷰에 데이터를 넣기 전, 넣고 싶은 데이터만 추출하는 과정
 
@@ -89,7 +93,7 @@ class RetrofitManager {
 
                                 // 1. 파싱 및 형식변환을 위한 변수들을 선언
                                 val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                                val formatter = SimpleDateFormat("yyyy년 MM월 dd일")
+                                val formatter = SimpleDateFormat("yyyy년 \nMM월 dd일")
 
                                 Log.d("parseData1", parser.parse(createdAt).toString())
 
@@ -109,7 +113,7 @@ class RetrofitManager {
                                 val photoItem = Photo(
                                     thumbnail = thumbLinks,
                                     author = userName,
-                                    createdAt = createdAt,
+                                    createdAt = outputDataString,
                                     likesCount = likeCount
                                 )
 
@@ -118,7 +122,10 @@ class RetrofitManager {
 
                             }
                             // response.body() 부분에 데이터가 담겨져 있음
-                            completion(RESPONSE_STATE.OK, photoDataList)
+                            completion(RESPONSE_STATUS.OK, photoDataList)
+
+                            }
+
 
                         }
 
@@ -130,7 +137,7 @@ class RetrofitManager {
             // 응답 실패시
             override fun onFailure(call: Call<JsonElement>, t: Throwable) {
                 Log.d("fail", "$t")
-                completion(RESPONSE_STATE.NO, null)
+                completion(RESPONSE_STATUS.NO, null)
             }
 
         })

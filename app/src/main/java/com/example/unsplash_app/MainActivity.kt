@@ -4,17 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import com.example.unsplash_app.Constants.TAG
 import com.example.unsplash_app.databinding.ActivityMainBinding
 import com.example.unsplash_app.retrofit.RetrofitManager
-import com.google.gson.JsonElement
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         with(binding) {
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -111,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 completion = { responseState, responseBody ->
 
                     when (responseState) {
-                        RESPONSE_STATE.OK -> {
+                        RESPONSE_STATUS.OK -> {
                             Toast.makeText(this, "api 호출 성공입니다.", Toast.LENGTH_SHORT).show()
 
                             // 검색하여 데이터가 잘 받아와지는 것 까지 확인했으니,
@@ -120,10 +114,11 @@ class MainActivity : AppCompatActivity() {
 
                             // 변수를 선언하여 번들 형태로 데이터를 직렬화해준다.
                             val bundle = Bundle()
-                            bundle.putSerializable("search_data_bundle", responseBody)
+
+                            bundle.putSerializable("search_data_serialized", responseBody)
 
                             // 직렬화된 데이터를 Intent 때 넘겨줄 수 있도록 putExtra 에 넣어준다.
-                            intent.putExtra("search_data_serialized", bundle)
+                            intent.putExtra("search_data_bundle", bundle)
 
                             // 툴바를 만들어 검색한 텍스트가 무엇인지 표시하려고 하므로, 검색한 내용도 putExtra 로 넘겨준다.
                             intent.putExtra("search_text", searchText)
@@ -132,10 +127,17 @@ class MainActivity : AppCompatActivity() {
                             startActivity(intent)
 
                         }
-                        RESPONSE_STATE.NO -> {
+                        RESPONSE_STATUS.NO -> {
                             Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
                         }
+                        RESPONSE_STATUS.NO_CONTENTS -> {
+                            Toast.makeText(this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     }
+
+                    // 검색 버튼 누른후 화면전환 되었을 때, 검색화면에서의 editText 를 비워주기 위함
+                    binding.editText1.setText("")
+
                 })
 
         }
