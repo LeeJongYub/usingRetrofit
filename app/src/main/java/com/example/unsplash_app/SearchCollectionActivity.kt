@@ -1,6 +1,5 @@
 package com.example.unsplash_app
 
-import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
@@ -21,9 +20,6 @@ class SearchCollectionActivity : AppCompatActivity() {
         val getSearchText = intent.getStringExtra("search_text")
 
         photoDataList = bundle?.getSerializable("search_data_serialized") as ArrayList<Photo>
-
-        // 받아온 데이터를 담아둘 리스트에 데이터를 담음
-
 
     }
 }
