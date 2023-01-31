@@ -3,14 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/search_menu_item"
         android:contentDescription="사진을 검색한다."
         android:icon="@drawable/ic_baseline_search_24"
         android:title="검색"
-        app:showAsAction="ifRoom" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <!-- actionViewClass 의 searchView, showAsAction 의 collapseActionView 를 통해
+    클릭시 검색창이 나오게 할 수 있다 -->
 
     <item
-        android:id="@+id/more"
+        android:id="@+id/more_menu_item"
         android:contentDescription="더보기 메뉴를 검색한다."
         android:icon="@drawable/ic_baseline_more_vert_24"
         android:title="더보기"

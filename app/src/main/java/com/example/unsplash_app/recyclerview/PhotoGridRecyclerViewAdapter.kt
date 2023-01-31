@@ -3,7 +3,7 @@ package com.example.unsplash_app.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.unsplash_app.Photo
+import com.example.unsplash_app.data.Photo
 import com.example.unsplash_app.R
 
 class PhotoGridRecyclerViewAdapter : RecyclerView.Adapter<PhotoItemViewHolder>() {

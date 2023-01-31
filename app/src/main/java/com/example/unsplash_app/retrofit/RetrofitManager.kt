@@ -2,7 +2,7 @@ package com.example.unsplash_app.retrofit
 
 import android.util.Log
 import com.example.unsplash_app.API
-import com.example.unsplash_app.Photo
+import com.example.unsplash_app.data.Photo
 import com.example.unsplash_app.RESPONSE_STATUS
 import com.google.gson.JsonElement
 import retrofit2.Call

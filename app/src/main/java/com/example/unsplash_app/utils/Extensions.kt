@@ -3,6 +3,8 @@ package com.example.unsplash_app
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import java.text.SimpleDateFormat
+import java.util.Date
 
 // editText 에 대한 커스텀함수를 만든 것
 // 사용 시에는 사용할 activity, fragment 에 myAddTextChanged 를 호출하여 사용할 수 있다.
@@ -34,4 +36,11 @@ fun String?.isJsonObject(): Boolean {
 // 2. 데이터가 jsonArray 형태인지
 fun String?.isJsonArray() : Boolean {
     return this?.startsWith("[") == true && this.endsWith("]")
+}
+
+
+// 검색기록 날짜 포맷 설정을 위한 확장함수
+fun Date.toDate() : String {
+    val format = SimpleDateFormat("HH:mm:ss")
+    return format.format(this)
 }

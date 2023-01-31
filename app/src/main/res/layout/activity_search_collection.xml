@@ -15,9 +15,9 @@
             style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/top_app_bar"
-            app:navigationIcon="@drawable/ic_baseline_menu_24"
             app:layout_scrollFlags="scroll|enterAlways"
+            app:menu="@menu/top_app_bar_menu"
+            app:navigationIcon="@drawable/ic_baseline_menu_24"
             app:title="사진검색" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -27,5 +27,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/search_view_expand"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_pink"
+        android:visibility="invisible"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <TextView
+            android:id="@+id/search_history_save_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="검색어 저장"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/search_history_mode_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/search_history_save_text"
+            app:layout_constraintStart_toEndOf="@id/search_history_save_text"
+            app:layout_constraintTop_toTopOf="@id/search_history_save_text" />
+
+        <Button
+            android:id="@+id/clear_search_history_button"
+            android:text="전체 삭제"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/gray"
+            android:drawableEnd="@drawable/ic_baseline_delete_24"
+            android:background="?attr/selectableItemBackground"/>
+        <!-- 백그라운드를 ?attr/selectableItemBackground 로 설정하면 뷰가 선택 가능한 형태가 된다. -->
+        <!-- drawableEnd, start 등을 통해 글자 옆에 아이콘으 배치할 수 있다. -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

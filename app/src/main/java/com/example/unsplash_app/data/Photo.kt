@@ -1,4 +1,4 @@
-package com.example.unsplash_app
+package com.example.unsplash_app.data
 
 import java.io.Serializable
 
