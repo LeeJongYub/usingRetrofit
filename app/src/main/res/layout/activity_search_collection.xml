@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchCollectionActivity">
+    tools:context=".activity.SearchCollectionActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_pink"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <TextView
@@ -66,6 +66,33 @@
             android:background="?attr/selectableItemBackground"/>
         <!-- 백그라운드를 ?attr/selectableItemBackground 로 설정하면 뷰가 선택 가능한 형태가 된다. -->
         <!-- drawableEnd, start 등을 통해 글자 옆에 아이콘으 배치할 수 있다. -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            app:layout_constraintTop_toBottomOf="@id/clear_search_history_button"/>
+
+        <TextView
+            android:id="@+id/recent_search_text_label"
+            android:text="최근 검색목록"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_bias="0.05"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clear_search_history_button"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recent_search_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recent_search_text_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

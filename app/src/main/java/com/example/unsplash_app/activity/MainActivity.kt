@@ -1,4 +1,4 @@
-package com.example.unsplash_app
+package com.example.unsplash_app.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,7 +8,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.unsplash_app.Constants.TAG
+import com.example.unsplash_app.R
+import com.example.unsplash_app.RESPONSE_STATUS
+import com.example.unsplash_app.SEARCH_TYPE
 import com.example.unsplash_app.databinding.ActivityMainBinding
+import com.example.unsplash_app.myAddTextChanged
 import com.example.unsplash_app.retrofit.RetrofitManager
 
 class MainActivity : AppCompatActivity() {
@@ -128,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 
                         }
                         RESPONSE_STATUS.NO -> {
-                            Toast.makeText(this, "api 호출 에러입니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "api 호출 에러, 네트워크 상태를 확인해주세요.", Toast.LENGTH_SHORT).show()
                         }
                         RESPONSE_STATUS.NO_CONTENTS -> {
                             Toast.makeText(this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()

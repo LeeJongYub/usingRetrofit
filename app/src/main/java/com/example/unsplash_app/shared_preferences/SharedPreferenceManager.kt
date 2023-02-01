@@ -1,14 +1,46 @@
-package com.example.unsplash_app
+package com.example.unsplash_app.shared_preferences
 
 import android.content.Context
 import android.util.Log
 import com.example.unsplash_app.data.SearchData
+import com.example.unsplash_app.utils.MyApp
 import com.google.gson.Gson
 
 object SharedPreferenceManager {
 
+    // 검색 목록을 저장하기 위한 sharedPreferences key 설정
     private const val SHARED_SEARCH_HISTORY = "shared_search_history"
     private const val KEY_SEARCH_HISTORY = "key_search_history"
+
+    // "검색어 저장 스위치" 활성화 여부에 따른 저장을 위한 sharedPreferences key 설정
+    private const val SHARED_SEARCH_HISTORY_MODE = "shared_search_history_mode"
+    private const val KEY_SEARCH_HISTORY_MODE = "key_search_history_mode"
+
+    // 검색어 저장 스위치(모드) 설정하기
+    // (1) 검색 저장 스위치 온오프 상태 저장하기
+    fun setSearchHistoryMode(isActivated : Boolean) {
+
+        val shared = MyApp.instance.getSharedPreferences(SHARED_SEARCH_HISTORY_MODE, Context.MODE_PRIVATE)
+
+        val editor = shared.edit()
+
+        editor.putBoolean(KEY_SEARCH_HISTORY_MODE, isActivated)
+
+        editor.apply()
+
+    }
+
+    // (2) 검색 저장 스위치 온오프 상태 저장된 것을 불러오기
+    fun getSearchHistoryMode(): Boolean {
+
+        val shared =
+            MyApp.instance.getSharedPreferences(SHARED_SEARCH_HISTORY_MODE, Context.MODE_PRIVATE)
+
+        // 저장되어있던 값 꺼내기 / 값이 없을 경우 디폴트 값을 false 설정
+        return shared.getBoolean(KEY_SEARCH_HISTORY_MODE, false)
+    }
+
+
 
     // sharedPreferences 를 활용하여
     // (1) 검색목록을 저장
@@ -53,6 +85,22 @@ object SharedPreferenceManager {
         }
         Log.d("getSearchHistoryList2", "$getSearchHistoryList") // [SearchData(term=dog, timeStamp=16:13:35), SearchData(term=dog, timeStamp=16:13:40)]
         return getSearchHistoryList
+    }
+
+    // 검색목록 지우기
+    fun removeAllSearchHistory() {
+        // 쉐어드 인스턴스 가져오기 (MODE_PRIVATE : 같은 앱에서만 사용가능)
+        val shared = MyApp.instance.getSharedPreferences(SHARED_SEARCH_HISTORY, Context.MODE_PRIVATE)
+
+        // 쉐어드 에디터 가져오기
+        val editor = shared.edit()
+
+        // 위에 검색 목록을 저장하는 sharedPreference 를 가져와서(설정한 sharedPreferences 명 : SHARED_SEARCH_HISTORY)
+        // clear() 메소드를 통해 지울 수 있다.
+        editor.clear()
+
+        // apply() 를 통해 변경사항 적용
+        editor.apply()
     }
 
 }

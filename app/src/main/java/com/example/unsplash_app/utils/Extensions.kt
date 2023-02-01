@@ -40,7 +40,7 @@ fun String?.isJsonArray() : Boolean {
 
 
 // 검색기록 날짜 포맷 설정을 위한 확장함수
-fun Date.toDate() : String {
+fun Date.toSimpleDateString() : String {
     val format = SimpleDateFormat("HH:mm:ss")
     return format.format(this)
 }

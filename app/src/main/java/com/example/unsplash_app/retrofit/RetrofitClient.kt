@@ -6,7 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.unsplash_app.API
 import com.example.unsplash_app.Constants.TAG
-import com.example.unsplash_app.MyApp
+import com.example.unsplash_app.utils.MyApp
 import com.example.unsplash_app.isJsonArray
 import com.example.unsplash_app.isJsonObject
 import okhttp3.Interceptor

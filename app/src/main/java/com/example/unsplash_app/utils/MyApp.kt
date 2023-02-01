@@ -1,4 +1,4 @@
-package com.example.unsplash_app
+package com.example.unsplash_app.utils
 
 import android.app.Application
 
@@ -17,6 +17,6 @@ class MyApp : Application() {
         instance = this
     }
 
-    // activity(appcompatActivity 가 아닌)에 사용될 때는 MyApp.instance 를 호출하여 사용하면 되고,
+    // activity(appcompatActivity 를 상속받지 않은)에 사용될 때는 MyApp.instance 를 호출하여 사용하면 되고,
     // MyApp.instance 자체가 context 가 된다.
 }
